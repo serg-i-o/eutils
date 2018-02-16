@@ -1,0 +1,12 @@
+{application, web_show_message,
+ [{description, "App for test webhooks messages"},
+  {vsn, "1"},
+  {registered, []},
+  {mod, { web_show_message_app, []}},
+  {applications, [kernel, stdlib, cowboy, cowlib, ranch ]},
+  {env,[]},
+  {modules, ['toppage_handler','web_show_message_app','web_show_message_sup']},
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

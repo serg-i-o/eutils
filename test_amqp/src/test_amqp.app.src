@@ -1,0 +1,17 @@
+{application, test_amqp,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { test_amqp_app, []}},
+  {applications,
+   [kernel
+    ,stdlib
+    ,kazoo_stdlib
+   ]},
+  {env,[]},
+  {modules, ['test_amqp_app','test_amqp_sup','test']},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

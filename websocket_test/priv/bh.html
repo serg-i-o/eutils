@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script>
+        var socket = new WebSocket("ws://127.0.0.1:5555");
+
+        function send(data) {
+            socket.send(JSON.stringify(data));
+        }
+
+        var requestId = getUUID();
+        var accountId = 'c5518687e9f42c4645816293a5a29d06';
+        var authToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImU5YmYxNWFlYTcxOWY2MzdhN2ZiMjJjODM3MzE4N2YxIn0.eyJpc3MiOiJrYXpvbyIsImlkZW50aXR5X3NpZyI6ImpYVDkxRTYtMkxERWRLWmNFaVE2LTFvclhoRjc1UG9oMXhkUlQ4TmxTRVEiLCJhY2NvdW50X2lkIjoiYzU1MTg2ODdlOWY0MmM0NjQ1ODE2MjkzYTVhMjlkMDYiLCJvd25lcl9pZCI6IjcwYWUzZDI0ZDc2Y2QxODg3OTcwNjE5OTc5ZWY2NWFhIiwibWV0aG9kIjoiY2JfdXNlcl9hdXRoIiwiZXhwIjoxNTE5NzM5MDcxfQ.ubXoY-aYBWtzEtn4TQGdfQccjx62xmmkYvwh3pwjTOxKG4_Qoh6M072LzbVA8KOcPi9DwOhCWSQYqKA5m9hc5FVTaPWAMvCslx4jfsuTqxegOmBTEqENrNfMjvHgGLruy3IwGjbK6nhxbbdTL-AVNl51sHllZLX83MxLCkila-qIQHf3deuIJO46Y3VqXQ3dM-aaaok3h_gbeYLt7w2jSiYJOCoLLhnW2AIjzFP9ILodMMeB2LpOeQT23RV1K415aSqbrNfbvR2ZXGbnKtqYCjDgK2tkQl9wD-PHy2gF4YXZysRXFvyJiB7TFRrq5If-n2v4ayV3PAT9ffo3EvCyag';
+
+        socket.onopen = function() {
+            send({
+                action: 'subscribe',
+                auth_token: authToken,
+                request_id: requestId,
+                data: {
+                    account_id: accountId,
+                    binding: 'call.CHANNEL_CREATE.*'
+                }
+            });
+
+            send({
+                action: 'subscribe',
+                auth_token: authToken,
+                request_id: requestId,
+                data: {
+                    account_id: accountId,
+                    binding: 'call.CHANNEL_ANSWER.*'
+                }
+            });
+
+            send({
+                action: 'subscribe',
+                auth_token: authToken,
+                request_id: requestId,
+                data: {
+                    account_id: accountId,
+                    binding: 'call.CHANNEL_DESTROY.*'
+                }
+            });
+        }
+
+        socket.onmessage = function(raw_message) {
+            var json_data = JSON.parse(raw_message.data);
+
+            console.log(json_data);
+        };
+
+        function getUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
+        }
+
+    </script>
+</body>
+</html>

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-</head>
-<body>
-<script>
+    <script src="/static/jquery.min.js"></script>
+    <script>
         var socket = new WebSocket("ws://127.0.0.1:5555");
 
         function send(data) {
@@ -12,7 +11,7 @@
 
         var requestId = getUUID();
         var accountId = 'c5518687e9f42c4645816293a5a29d06';
-        var authToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImU5YmYxNWFlYTcxOWY2MzdhN2ZiMjJjODM3MzE4N2YxIn0.eyJpc3MiOiJrYXpvbyIsImlkZW50aXR5X3NpZyI6ImpYVDkxRTYtMkxERWRLWmNFaVE2LTFvclhoRjc1UG9oMXhkUlQ4TmxTRVEiLCJhY2NvdW50X2lkIjoiYzU1MTg2ODdlOWY0MmM0NjQ1ODE2MjkzYTVhMjlkMDYiLCJvd25lcl9pZCI6IjcwYWUzZDI0ZDc2Y2QxODg3OTcwNjE5OTc5ZWY2NWFhIiwibWV0aG9kIjoiY2JfdXNlcl9hdXRoIiwiZXhwIjoxNTE5NzM5MDcxfQ.ubXoY-aYBWtzEtn4TQGdfQccjx62xmmkYvwh3pwjTOxKG4_Qoh6M072LzbVA8KOcPi9DwOhCWSQYqKA5m9hc5FVTaPWAMvCslx4jfsuTqxegOmBTEqENrNfMjvHgGLruy3IwGjbK6nhxbbdTL-AVNl51sHllZLX83MxLCkila-qIQHf3deuIJO46Y3VqXQ3dM-aaaok3h_gbeYLt7w2jSiYJOCoLLhnW2AIjzFP9ILodMMeB2LpOeQT23RV1K415aSqbrNfbvR2ZXGbnKtqYCjDgK2tkQl9wD-PHy2gF4YXZysRXFvyJiB7TFRrq5If-n2v4ayV3PAT9ffo3EvCyag';
+        var authToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImU5YmYxNWFlYTcxOWY2MzdhN2ZiMjJjODM3MzE4N2YxIn0.eyJpc3MiOiJrYXpvbyIsImlkZW50aXR5X3NpZyI6ImpYVDkxRTYtMkxERWRLWmNFaVE2LTFvclhoRjc1UG9oMXhkUlQ4TmxTRVEiLCJhY2NvdW50X2lkIjoiYzU1MTg2ODdlOWY0MmM0NjQ1ODE2MjkzYTVhMjlkMDYiLCJvd25lcl9pZCI6IjcwYWUzZDI0ZDc2Y2QxODg3OTcwNjE5OTc5ZWY2NWFhIiwibWV0aG9kIjoiY2JfdXNlcl9hdXRoIiwiZXhwIjoxNTE5ODA4OTQ2fQ.DKDek4VJyvWHCkEBtUjv7m3UDHxnThzUPfJN2SwSRaM2DEOEouTdiiRUaOZurFhQ_59lz-3zRqChJQDeW_ZWix6lk8NgbT_xUobYAGFVg8bWyLN3nwqShO-0vZZ-0XWPrCyoVnGadv1zl6O0ym_-CCWrFlmJnIeNRjnTYfXgA69FuwBgDSs3n1JaxxuQOadQ3SbdGI8TPOFGZNbVnDFSHZN3UZAsmHHNEgvpBNuUW4t5h-17EmtdOCohTmEpPaRTbkdR_hR1b-7zDjWbKfNc4n5QBAT3Czb0FBdM1FIil42wrJksS6YG3x8lY_npMIGCgEmoCNkTtN8nkFgBlx1ajw';
 
         socket.onopen = function() {
             send({
@@ -46,10 +45,37 @@
             });
         }
 
+
+        function confEventBind(){
+            send({
+                action: 'subscribe',
+                auth_token: authToken,
+                request_id: requestId,
+                data: {
+                    account_id: accountId,
+                    binding: 'conference.event.*.*'
+                }
+            });
+        }
+
+        function confCommandBind(){
+            send({
+                action: 'subscribe',
+                auth_token: authToken,
+                request_id: requestId,
+                data: {
+                    account_id: accountId,
+                    binding: 'conference.command.*'
+                }
+            });
+        }
+
         socket.onmessage = function(raw_message) {
             var json_data = JSON.parse(raw_message.data);
 
-            console.log(json_data);
+            <!--console.log(json_data);-->
+
+            showScreen('<span style="color: blue;">RESPONSE: ' + JSON.stringify(json_data) + '</span>');
         };
 
         function getUUID() {
@@ -59,6 +85,28 @@
             });
         }
 
+        function showScreen(txt) {
+            $('#output').prepend('<p>' + txt + '</p>');
+        };
+
+        function clearScreen()
+        {
+          $('#output').html("");
+        };
+
     </script>
+</head>
+<body>
+<div id="content">
+    <div style="display: inline-block;">
+        <button id="clear" onclick="clearScreen()" >Clear text</button>
+        <button id="conf-event" onclick="confEventBind()" >Conf Event</button>
+        <button id="conf-command" onclick="confCommandBind()" >Conf Command</button>
+    </div>
+
+    <div id="output"></div>
+</div>
+
+
 </body>
 </html>

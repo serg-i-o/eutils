@@ -1,0 +1,12 @@
+{application, websocket_test,
+	[{description, "App for test webhooks messages"},
+		{vsn, "1"},
+		{registered, []},
+		{mod, { websocket_test_app, []}},
+		{applications, [kernel, stdlib, cowboy, cowlib, ranch ]},
+		{env,[]},
+		{modules, ['ws_handler','websocket_test_app','websocket_test_sup']},
+		{maintainers, []},
+		{licenses, ["Apache 2.0"]},
+		{links, []}
+	]}.

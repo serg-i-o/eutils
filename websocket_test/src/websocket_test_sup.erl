@@ -1,23 +1,30 @@
-%% Feel free to use, reuse and abuse the code in this file.
-
-%% @private
 -module(websocket_test_sup).
+
 -behaviour(supervisor).
 
 %% API.
 -export([start_link/0]).
 
-%% supervisor.
+%% Supervisor callbacks
 -export([init/1]).
 
-%% API.
+-define(SERVER, ?MODULE).
 
--spec start_link() -> {ok, pid()}.
+%%====================================================================
+%% API functions
+%%====================================================================
+
 start_link() ->
-	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+	supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
-%% supervisor.
+%%====================================================================
+%% Supervisor callbacks
+%%====================================================================
 
+%% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
-	Procs = [],
-	{ok, {{one_for_one, 10, 10}, Procs}}.
+	{ok, { {one_for_one, 10, 100}, []} }.
+
+%%====================================================================
+%% Internal functions
+%%====================================================================

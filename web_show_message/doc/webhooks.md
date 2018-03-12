@@ -288,7 +288,7 @@ Most of these fields should be present on all payloads.
     * hook_event: doc
     * action: doc_created, doc_updated, doc_deleted
     * type: user, vmbox, callflow, account, device, faxbox, media
-* [conference](applications/webhooks/doc/webhook_conference.md)
+* [conference](websocket_test/doc/webhook_conference.md)
 
 #### Hook Specific Custom Data
 

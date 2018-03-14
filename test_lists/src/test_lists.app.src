@@ -1,0 +1,12 @@
+{application, test_lists,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { test_lists_app, []}},
+  {applications, [kernel, stdlib, hackney ]},
+  {env,[]},
+  {modules, ['test_lists','test_lists_app','test_lists_sup']},
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

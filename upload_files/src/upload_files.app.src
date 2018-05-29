@@ -1,0 +1,12 @@
+{application, upload_files,
+ [{description, "Web App for save call recording files"},
+  {vsn, "1"},
+  {registered, []},
+  {mod, { upload_files_app, []}},
+  {applications, [kernel, stdlib, cowboy, cowlib, ranch, kazoo_stdlib]},
+  {env,[]},
+  {modules, ['upload_handler','upload_files_app','upload_files_sup']},
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

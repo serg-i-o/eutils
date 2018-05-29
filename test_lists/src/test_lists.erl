@@ -170,8 +170,23 @@ gen_entries(I, N) when I < (N + 1) ->
 
 -spec get_entry_json(ne_binary()) -> ne_binary().
 get_entry_json(Number) ->
-    JsonString = io_lib:format("{\"data\": {\"number\": \"~4..0B\", \"displayname\": \"Test entry ~4..0B\"}}",[Number, Number]),
+    NumberOrPattern = get_number_or_pattern(Number),
+    NameOrDisplayname = get_name_or_displayname(Number),
+    JsonString = io_lib:format("{\"data\": {\"id\": \"0000-~4..0B\", ~s, \"firstname\": \"FirstName-~p\", \"lastname\": \"LastName-~p\" , ~s}}",
+        [Number, NameOrDisplayname, Number,     Number, NumberOrPattern]),
     list_to_binary(JsonString).
 
+get_number_or_pattern(Number) ->
+    case even(Number) of
+        'true' -> io_lib:format("\"number\": \"~4..0B\"",[Number]);
+        'false' -> io_lib:format("\"pattern\": \"^\\\\*2([0-9]{2,})$\"",[])
+    end.
 
+get_name_or_displayname(Number) ->
+    case even(Number) of
+        'true' -> io_lib:format("\"displayname\": \"DisplayName-~p\"",[Number]);
+        'false' -> io_lib:format("\"name\": \"Name-~p\"",[Number])
+    end.
 
+even(X) when X >= 0 -> (X band 1) == 0.
+%%odd(X) when X > 0 -> not even(X).
